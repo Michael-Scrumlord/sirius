@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sirius: a home system in three stars</title>
+  <meta name="description" content="Sirius, Vega and Rigel: the services of a small home system run with AI assistants, explored as three stars. Also the home of Sirius Backup.">
+  <link rel="stylesheet" href="style.css">
+  <script type="importmap">
+    { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                   "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }
+  </script>
+</head>
+<body>
+  <canvas id="sky" aria-hidden="true"></canvas>
+
+  <header class="brand">
+    <h1>Sirius</h1>
+    <p>A home system in three stars. Pick one to see what runs there.</p>
+    <nav aria-label="Stars">
+      <button data-go="overview" class="on">All three</button>
+      <button data-go="sirius">Sirius</button>
+      <button data-go="vega">Vega</button>
+      <button data-go="rigel">Rigel</button>
+      <button data-open="about">About</button>
+    </nav>
+  </header>
+
+  <aside id="panel" aria-live="polite"></aside>
+  <div id="tip" role="tooltip" hidden></div>
+  <p class="hint">Drag to look around · scroll or pinch to zoom · click a star or a planet</p>
+
+  <section id="about" class="drawer" hidden>
+    <button class="close" data-close="about" aria-label="Close">×</button>
+    <h2>How Sirius works</h2>
+    <p>Sirius is a small home system: one server that holds the apps, the files and a graphics card, and two
+      companions, Vega and Rigel, that take the jobs it is a poor fit for. It is built and maintained by AI
+      assistants working in the open. They write plans to a shared mailbox, file a report when something breaks or
+      wastes time, and ask a gatekeeper (the Warden) for access instead of holding keys. Every change lands in
+      version control with a note on what changed and why. A person decides; the agents do the work.</p>
+    <p>Each star in the sky is one machine. Its planets are groups of services; hover one to see what it is.</p>
+
+    <h2 id="backup">Sirius Backup</h2>
+    <p><strong>Sirius Backup</strong> is the part of this system that backs Sirius up to its owner's own Google
+      Drive. It runs on Sirius with <a href="https://restic.net">restic</a> and <a href="https://rclone.org">rclone</a>:
+      files are encrypted at home before they leave, and only the encrypted data is stored in one folder of the
+      owner's Drive. It asks Google for the narrowest Drive permission, which lets it see and change only the files it
+      created itself, never the rest of the Drive. It is a personal tool used by one person; nobody else signs in to it.</p>
+    <p><a href="privacy.html">Privacy policy</a></p>
+  </section>
+
+  <noscript>
+    <section class="drawer">
+      <h2>Sirius</h2>
+      <p>This page draws the three machines of the Sirius home system as stars and needs JavaScript and WebGL.
+        Sirius is the home server; Vega and Rigel are its companions. It is also the home of Sirius Backup, which
+        stores encrypted backups in its owner's own Google Drive. <a href="privacy.html">Privacy policy</a></p>
+    </section>
+  </noscript>
+
+  <footer><a href="#backup" data-open="about">Sirius Backup</a> · <a href="privacy.html">Privacy</a></footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>

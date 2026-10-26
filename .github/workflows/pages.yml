@@ -1,0 +1,43 @@
+# GitHub Pages for a repo copied to GitHub (template; guide: ~/Ubuntu/guides/github.md).
+# Put it in the repo on Sirius as .github/workflows/pages.yml, then run `github-publish pages <repo>` on the Mac.
+# It runs only on GitHub (Gitea skips .github/ when the repo has .gitea/workflows/, and the job checks the server).
+# Builds with `npm ci && npm run build` when there is a package.json, then publishes SITE_DIR.
+# A Vite site is served from /<repo name>/: build with `vite build --base=./` or set `base` to match.
+# A free GitHub plan serves Pages only from public repos.
+name: pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+env:
+  SITE_DIR: site        # plain HTML
+jobs:
+  deploy:
+    if: github.server_url == 'https://github.com'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        if: hashFiles('package.json') != ''
+        with:
+          node-version: 22
+          cache: npm
+      - name: build
+        if: hashFiles('package.json') != ''
+        run: npm ci && npm run build
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ${{ env.SITE_DIR }}
+      - id: deployment
+        uses: actions/deploy-pages@v4
